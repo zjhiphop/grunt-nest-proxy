@@ -5,6 +5,7 @@ var mountFolder = function(connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
 var proxySnippet = require('grunt-nest-proxy/lib/proxy').request;
+var fbToken = "[Your FaceBook Access Token]"; //
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -65,6 +66,7 @@ module.exports = function(grunt) {
                 host: 'api.twitter.com',
                 proto: "https",
                 port: 443,
+                proxy: "http://localhost:8087",
                 rewrite: {
                     'tw/search': "1.1/users/search.json"
                 },

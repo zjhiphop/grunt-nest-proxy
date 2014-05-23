@@ -50,7 +50,7 @@ var processRewrites = function(rewrites) {
             rules.push(rule);
             console.log('Rewrite rule created for: [' + rule.from + ' -> ' + rule.to + '].');
         } else {
-            console.log.error('Invalid rule');
+            console.error('Invalid rule');
         }
     });
 
@@ -95,8 +95,6 @@ module.exports = function(grunt) {
         } else {
             proxyOptions = proxyOptions.concat(grunt.config('connect.' + CONFIG_NAME) || []);
         }
-
-        console.log(proxyOptions);
 
         //2. Iterator all proxies
         _.forEach(proxyOptions, function(proxy, index) {
