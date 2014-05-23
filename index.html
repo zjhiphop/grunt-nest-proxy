@@ -1,0 +1,371 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>grunt-nest-proxy by zjhiphop</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">grunt-nest-proxy</h1>
+        <p class="header">Like grunt-connect-proxy, but nested and simpler</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/zjhiphop/grunt-nest-proxy/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/zjhiphop/grunt-nest-proxy/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/zjhiphop/grunt-nest-proxy">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/zjhiphop">zjhiphop</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a name="grunt-nest-proxy" class="anchor" href="#grunt-nest-proxy"><span class="octicon octicon-link"></span></a>grunt-nest-proxy</h1>
+
+<blockquote>
+<p>Like grunt-connect-proxy, but nested and simpler</p>
+</blockquote>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>This plugin requires Grunt <code>~0.4.5</code></p>
+
+<p>If you haven't used <a href="http://gruntjs.com/">Grunt</a> before, be sure to check out the <a href="http://gruntjs.com/getting-started">Getting Started</a> guide, as it explains how to create a <a href="http://gruntjs.com/sample-gruntfile">Gruntfile</a> as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:</p>
+
+<pre lang="shell"><code>npm install grunt-nest-proxy --save-dev
+</code></pre>
+
+<p>Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">'grunt-nest-proxy'</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="the-nest_proxy-task" class="anchor" href="#the-nest_proxy-task"><span class="octicon octicon-link"></span></a>The "nest_proxy" task</h2>
+
+<h3>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h3>
+
+<h4>
+<a name="basic-usage" class="anchor" href="#basic-usage"><span class="octicon octicon-link"></span></a>Basic Usage</h4>
+
+<p>In your project's Gruntfile, add a section named <code>nest_proxy</code> to the data object passed into <code>grunt.initConfig()</code>.</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+   <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+            <span class="c1">// change this to '0.0.0.0' to access the server from outside</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">'localhost'</span>
+        <span class="p">},</span>
+        <span class="nx">proxies</span><span class="o">:</span> <span class="p">[{</span>
+            <span class="nx">context</span><span class="o">:</span> <span class="s1">'/api/v1'</span><span class="p">,</span>
+            <span class="nx">host</span><span class="o">:</span> <span class="s1">'yourserver.com'</span><span class="p">,</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+            <span class="nx">proto</span><span class="o">:</span> <span class="s1">'http'</span>
+        <span class="p">}]</span>
+   <span class="p">}</span>   
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h3>
+
+<p>The available configuration options from a given proxy are generally the same as what is provided by the underlying <a href="https://github.com/mikeal/request">request</a> library.</p>
+
+<h4>
+<a name="optionscontext" class="anchor" href="#optionscontext"><span class="octicon octicon-link"></span></a>options.context</h4>
+
+<p>Type: <code>String</code> or <code>Array</code>
+Default value: ``</p>
+
+<p>The <code>context</code> to match requests URL. Matched requests will be proxied. Every url should be start with '/' and not end of '/'. Such as: ['/api/v1', '/api/v2'].</p>
+
+<h4>
+<a name="optionshost" class="anchor" href="#optionshost"><span class="octicon octicon-link"></span></a>options.host</h4>
+
+<p>Type: <code>String</code>
+Default value: <code>localhost</code></p>
+
+<p>The <code>host</code> is proxy server's hostname.</p>
+
+<h4>
+<a name="optionsport" class="anchor" href="#optionsport"><span class="octicon octicon-link"></span></a>options.port</h4>
+
+<p>Type: <code>Number</code>
+Default value: <code>80</code></p>
+
+<p>The <code>port</code> is proxy server's port number</p>
+
+<h4>
+<a name="optionsproto" class="anchor" href="#optionsproto"><span class="octicon octicon-link"></span></a>options.proto</h4>
+
+<p>Type: <code>String</code>
+Default Value: <code>http</code></p>
+
+<p>The <code>proto</code> is proxy server's http protocol</p>
+
+<h4>
+<a name="optionsproxy" class="anchor" href="#optionsproxy"><span class="octicon octicon-link"></span></a>options.proxy</h4>
+
+<p>Type: <code>String</code>
+Default Value: ``</p>
+
+<p>The <code>proxy</code> is the proxy of proxy server. Meaning the request will send with this proxy at last. For example, to proxy facebook user infomation in China. As you know, the facebook is blocked in China. So it must make this request go with VPN. Like: <code>localhost:9000/facebook/search?userXXX -&gt; facebook.com/search?userXXX -&gt; VPN</code>.</p>
+
+<h3>
+<a name="usage-examples" class="anchor" href="#usage-examples"><span class="octicon octicon-link"></span></a>Usage Examples</h3>
+
+<h4>
+<a name="basic-configuration" class="anchor" href="#basic-configuration"><span class="octicon octicon-link"></span></a>Basic Configuration</h4>
+
+<p>Add new configuration named <code>proxies</code> to connect config node.</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+   <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+            <span class="c1">// change this to '0.0.0.0' to access the server from outside</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">'localhost'</span>
+        <span class="p">},</span>
+        <span class="nx">proxies</span><span class="o">:</span> <span class="p">[{</span>
+            <span class="nx">context</span><span class="o">:</span> <span class="s1">'/api/v1'</span><span class="p">,</span>
+            <span class="nx">host</span><span class="o">:</span> <span class="s1">'yourserver.com'</span><span class="p">,</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+            <span class="nx">proto</span><span class="o">:</span> <span class="s1">'http'</span>
+        <span class="p">}]</span>
+   <span class="p">}</span>   
+<span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="adding-the-middleware-with-livereload" class="anchor" href="#adding-the-middleware-with-livereload"><span class="octicon octicon-link"></span></a>Adding the middleware with LiveReload</h4>
+
+<div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+   <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+            <span class="c1">// change this to '0.0.0.0' to access the server from outside</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">'localhost'</span>
+        <span class="p">},</span>
+        <span class="nx">proxies</span><span class="o">:</span> <span class="p">[{</span>
+            <span class="nx">context</span><span class="o">:</span> <span class="s1">'/api/v1'</span><span class="p">,</span>
+            <span class="nx">host</span><span class="o">:</span> <span class="s1">'yourserver.com'</span><span class="p">,</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+            <span class="nx">proto</span><span class="o">:</span> <span class="s1">'http'</span>
+        <span class="p">}],</span>
+        <span class="nx">livereload</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">middleware</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+                  <span class="c1">// Setup the proxy</span>
+                  <span class="k">return</span> <span class="p">[</span>
+                      <span class="nx">require</span><span class="p">(</span><span class="s1">'grunt-nest-proxy/lib/proxy'</span><span class="p">).</span><span class="nx">request</span><span class="p">,</span>
+                      <span class="nx">lrSnippet</span><span class="p">,</span>
+                      <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'tmp'</span><span class="p">),</span>
+                      <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'app'</span><span class="p">)</span>
+                  <span class="p">];</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+       <span class="p">}</span>
+   <span class="p">}</span>   
+<span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="adding-the-middleware-without-livereload" class="anchor" href="#adding-the-middleware-without-livereload"><span class="octicon octicon-link"></span></a>Adding the middleware without LiveReload</h4>
+
+<div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+   <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+            <span class="c1">// change this to '0.0.0.0' to access the server from outside</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">'localhost'</span>
+        <span class="p">},</span>
+        <span class="nx">proxies</span><span class="o">:</span> <span class="p">[{</span>
+            <span class="nx">context</span><span class="o">:</span> <span class="s1">'/api/v1'</span><span class="p">,</span>
+            <span class="nx">host</span><span class="o">:</span> <span class="s1">'yourserver.com'</span><span class="p">,</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+            <span class="nx">proto</span><span class="o">:</span> <span class="s1">'http'</span>
+        <span class="p">}],</span>
+        <span class="nx">server</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">middleware</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">connect</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="p">[</span>
+                        <span class="nx">require</span><span class="p">(</span><span class="s1">'grunt-nest-proxy/lib/proxy'</span><span class="p">).</span><span class="nx">request</span><span class="p">,</span>
+
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'tmp'</span><span class="p">),</span>
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'test'</span><span class="p">),</span>
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'app'</span><span class="p">)</span>
+                    <span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+   <span class="p">}</span>   
+<span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="multi-server-proxy-configuration" class="anchor" href="#multi-server-proxy-configuration"><span class="octicon octicon-link"></span></a>Multi-server proxy configuration</h4>
+
+<div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+   <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+            <span class="c1">// change this to '0.0.0.0' to access the server from outside</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">'localhost'</span>
+        <span class="p">},</span>
+        <span class="nx">proxies</span><span class="o">:</span> <span class="p">[{</span>
+            <span class="nx">context</span><span class="o">:</span> <span class="s1">'/api/v1'</span><span class="p">,</span>
+            <span class="nx">host</span><span class="o">:</span> <span class="s1">'yourserver.com'</span><span class="p">,</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+            <span class="nx">proto</span><span class="o">:</span> <span class="s1">'http'</span>
+        <span class="p">}],</span>
+        <span class="nx">server1</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">middleware</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">connect</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="p">[</span>
+                        <span class="nx">require</span><span class="p">(</span><span class="s1">'grunt-nest-proxy/lib/proxy'</span><span class="p">).</span><span class="nx">request</span><span class="p">,</span>
+
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'tmp'</span><span class="p">),</span>
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'test'</span><span class="p">),</span>
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'app'</span><span class="p">)</span>
+                    <span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nx">server2</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">middleware</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">connect</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="p">[</span>
+                        <span class="nx">require</span><span class="p">(</span><span class="s1">'grunt-nest-proxy/lib/proxy'</span><span class="p">).</span><span class="nx">request</span><span class="p">,</span>
+
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'tmp'</span><span class="p">),</span>
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'test'</span><span class="p">),</span>
+                        <span class="nx">mountFolder</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="s1">'app'</span><span class="p">)</span>
+                    <span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>        
+   <span class="p">}</span>   
+<span class="p">});</span>
+
+
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">grunt</span><span class="p">.</span><span class="nx">task</span><span class="p">.</span><span class="nx">run</span><span class="p">([</span>
+        <span class="s1">'nest_proxy:server2'</span>
+    <span class="p">]);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="nested-proxy" class="anchor" href="#nested-proxy"><span class="octicon octicon-link"></span></a>Nested proxy</h4>
+
+<p>Proxy blocked service to GoAgent server.</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+        <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+                <span class="c1">// change this to '0.0.0.0' to access the server from outside</span>
+                <span class="nx">hostname</span><span class="o">:</span> <span class="s1">'localhost'</span>
+            <span class="p">},</span>
+            <span class="nx">proxies</span><span class="o">:</span> <span class="p">[{</span>
+                <span class="nx">context</span><span class="o">:</span> <span class="s1">'/fb/search'</span><span class="p">,</span>
+                <span class="nx">host</span><span class="o">:</span> <span class="s1">'graph.facebook.com'</span><span class="p">,</span>
+                <span class="nx">proto</span><span class="o">:</span> <span class="s2">"https"</span><span class="p">,</span>
+                <span class="nx">port</span><span class="o">:</span> <span class="mi">443</span><span class="p">,</span>
+                <span class="nx">proxy</span><span class="o">:</span> <span class="s2">"http://localhost:8087"</span><span class="p">,</span>
+                <span class="nx">rewrite</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s1">'token'</span><span class="o">:</span> <span class="s1">'access_token='</span> <span class="o">+</span> <span class="nx">fbToken</span><span class="p">,</span>
+                    <span class="s1">'fb/search'</span><span class="o">:</span> <span class="s2">"v2.0/search"</span>
+                <span class="p">}</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="nx">context</span><span class="o">:</span> <span class="s1">'/tw/search'</span><span class="p">,</span>
+                <span class="nx">host</span><span class="o">:</span> <span class="s1">'api.twitter.com'</span><span class="p">,</span>
+                <span class="nx">proto</span><span class="o">:</span> <span class="s2">"https"</span><span class="p">,</span>
+                <span class="nx">port</span><span class="o">:</span> <span class="mi">443</span><span class="p">,</span>
+                <span class="nx">proxy</span><span class="o">:</span> <span class="s2">"http://localhost:8087"</span><span class="p">,</span>
+                <span class="nx">rewrite</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s1">'tw/search'</span><span class="o">:</span> <span class="s2">"1.1/users/search.json"</span>
+                <span class="p">},</span>
+                <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="nx">Authorization</span><span class="o">:</span> <span class="s1">''</span>
+                <span class="p">}</span>
+            <span class="p">}]</span>
+       <span class="p">}</span>
+ <span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="adding-the-configureproxy-task-to-the-server-task" class="anchor" href="#adding-the-configureproxy-task-to-the-server-task"><span class="octicon octicon-link"></span></a>Adding the configureProxy task to the server task</h3>
+
+<p>For the server task, add the <code>nest_proxy</code> task before the connect task</p>
+
+<div class="highlight highlight-js"><pre>    <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">'server'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">grunt</span><span class="p">.</span><span class="nx">task</span><span class="p">.</span><span class="nx">run</span><span class="p">([</span>
+            <span class="s1">'clean:server'</span><span class="p">,</span>
+            <span class="s1">'nest_proxy'</span><span class="p">,</span>
+            <span class="s1">'connect:livereload'</span><span class="p">,</span>
+            <span class="s1">'open:server'</span><span class="p">,</span>
+            <span class="s1">'watch'</span>
+        <span class="p">]);</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="issues" class="anchor" href="#issues"><span class="octicon octicon-link"></span></a>ISSUES</h2>
+
+<ul>
+<li>Only support <code>GET</code> request</li>
+<li>Not support <code>WeSocket</code> yet</li>
+<li>Not testing enough</li>
+</ul><h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using <a href="http://gruntjs.com/">Grunt</a>.</p>
+
+<h2>
+<a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release History</h2>
+
+<h1></h1>
+
+<ul>
+<li>0.0.1
+
+<ul>
+<li>Support blocked service proxy</li>
+<li>Http GET request</li>
+</ul>
+</li>
+</ul>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-39609141-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
