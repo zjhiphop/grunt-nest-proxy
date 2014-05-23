@@ -1,47 +1,45 @@
 {
-  "name": "grunt-nest-proxy",
-  "description": "Like http-proxy, but could be nested",
-  "version": "0.0.1",
-  "homepage": "https://github.com/zjhiphop/grunt-nest-proxy",
-  "author": {
-    "name": "zjhiphop",
-    "email": "zjhiphop@gmail.com",
-    "url": "http://zjhiphop.github.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/zjhiphop/grunt-nest-proxy.git"
-  },
-  "bugs": {
-    "url": "https://github.com/zjhiphop/grunt-nest-proxy/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/zjhiphop/grunt-nest-proxy/blob/master/LICENSE-MIT"
+    "name": "grunt-nest-proxy",
+    "description": "Like http-proxy, but could be nested",
+    "version": "0.0.2",
+    "homepage": "https://github.com/zjhiphop/grunt-nest-proxy",
+    "author": {
+        "name": "zjhiphop",
+        "email": "zjhiphop@gmail.com",
+        "url": "http://zjhiphop.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/zjhiphop/grunt-nest-proxy.git"
+    },
+    "bugs": {
+        "url": "https://github.com/zjhiphop/grunt-nest-proxy/issues"
+    },
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/zjhiphop/grunt-nest-proxy/blob/master/LICENSE-MIT"
+    }],
+    "engines": {
+        "node": ">= 0.8.0"
+    },
+    "scripts": {
+        "test": "grunt test"
+    },
+    "devDependencies": {
+        "grunt-contrib-jshint": "^0.9.2",
+        "grunt-contrib-clean": "^0.5.0",
+        "grunt-contrib-nodeunit": "^0.3.3",
+        "grunt": "~0.4.5",
+        "grunt-contrib-connect": "~0.7.1"
+    },
+    "peerDependencies": {
+        "grunt": "~0.4.5"
+    },
+    "keywords": [
+        "gruntplugin"
+    ],
+    "dependencies": {
+        "request": "~2.36.0",
+        "lodash": "~2.4.1"
     }
-  ],
-  "engines": {
-    "node": ">= 0.8.0"
-  },
-  "scripts": {
-    "test": "grunt test"
-  },
-  "devDependencies": {
-    "grunt-contrib-jshint": "^0.9.2",
-    "grunt-contrib-clean": "^0.5.0",
-    "grunt-contrib-nodeunit": "^0.3.3",
-    "grunt": "~0.4.5",
-    "grunt-contrib-connect": "~0.7.1"
-  },
-  "peerDependencies": {
-    "grunt": "~0.4.5"
-  },
-  "keywords": [
-    "gruntplugin"
-  ],
-  "dependencies": {
-    "request": "~2.36.0",
-    "lodash": "~2.4.1"
-  }
 }
