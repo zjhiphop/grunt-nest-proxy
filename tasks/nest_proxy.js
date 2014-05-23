@@ -66,9 +66,7 @@ var validateProxyConfig = function(config) {
     }
 
     if (!config.context) {
-        console.warn("Must has a context!");
-
-        return false;
+        console.warn("Don't has a context!");
     }
 
     if (config.proto === "http" && config.port === 80) {

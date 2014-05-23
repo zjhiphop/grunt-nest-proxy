@@ -1,6 +1,5 @@
 'use strict';
 
-var grunt = require('grunt');
 var Proxy = require('../lib/proxy');
 
 /*
@@ -29,15 +28,18 @@ exports.nest_proxy = {
         done();
     },
     default_options: function(test) {
-        test.expect(1);
-        var p = Proxy.add();
-        test.equal(p.length, 2, "When add one proxy the length should be 2");
+        test.expect(6);
+
+        var p = Proxy.getProxies();
+        var c = p[0].config;
+
+        test.equal(p.length, 1, "The initialized proxies should be 1");
+        test.equal(typeof c, "object", "The default config must be an object");
+        test.equal(c.port, 9000, "The default port should be 9000");
+        test.equal(c.host, "localhost", "The default host should be localhost");
+        test.equal(c.proto, "http", "The default protocol should be http");
+        test.equal(c.context, null, "The default protocol should be null");
 
         test.done();
-    },
-    custom_options: function(test) {
-        test.expect(0);
-
-        test.done();
-    },
+    }
 };
