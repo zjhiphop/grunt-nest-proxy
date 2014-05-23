@@ -4,7 +4,7 @@ var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
 var mountFolder = function(connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
-var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+var proxySnippet = require('grunt-nest-proxy/lib/proxy').request;
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -46,9 +46,31 @@ module.exports = function(grunt) {
                 hostname: 'localhost'
             },
             proxies: [{
-                context: '/cortex',
-                host: 'localhost',
-                port: 8080
+                context: '/api/v1',
+                host: 'yourserver.com',
+                port: 80,
+                proto: false
+            }, {
+                context: '/fb/search',
+                host: 'graph.facebook.com',
+                proto: "https",
+                port: 443,
+                proxy: "http://localhost:8087",
+                rewrite: {
+                    'token': 'access_token=' + fbToken,
+                    'fb/search': "v2.0/search"
+                }
+            }, {
+                context: '/tw/search',
+                host: 'api.twitter.com',
+                proto: "https",
+                port: 443,
+                rewrite: {
+                    'tw/search': "1.1/users/search.json"
+                },
+                headers: {
+                    Authorization: ''
+                }
             }],
             livereload: {
                 options: {
@@ -236,7 +258,7 @@ module.exports = function(grunt) {
         grunt.task.run([
             'clean:server',
             'compass:server',
-            'configureProxies',
+            'nest_proxy',
             'livereload-start',
             'connect:livereload',
             'open',
