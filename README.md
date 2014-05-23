@@ -274,7 +274,7 @@ For the server task, add the `nest_proxy` task before the connect task
 
 ## ISSUES
 * Only support `GET` request
-* Not support `WeSocket` yet
+* Not support `WebSocket` yet
 * Not testing enough
 
 ## Contributing
