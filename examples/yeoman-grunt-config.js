@@ -70,8 +70,11 @@ module.exports = function(grunt) {
                 rewrite: {
                     'tw/search': "1.1/users/search.json"
                 },
-                headers: {
-                    Authorization: ''
+                oauth: {
+                    consumer_key: CONSUMER_KEY, // Your consumer key
+                    consumer_secret: CONSUMER_SECRET, // Your consumer secret
+                    token: TOKEN, // Your access token
+                    token_secret: TOKEN_SECRET // Your access secret
                 }
             }],
             livereload: {

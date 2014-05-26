@@ -23,6 +23,9 @@ var proxy = require("../lib/proxy");
 var http = require('http');
 var fb_res = require("../_tmp/facebook-res");
 var twitter_res = require("../_tmp/twitter-res");
+var request = require("request");
+var _ = require("lodash");
+var gitCfgReader = require("../lib/git-config-reader");
 
 
 exports.request_test = {
@@ -113,6 +116,41 @@ exports.request_test = {
             });
 
         }).end();
-    }
+    },
+    twitter_oauth_test: function(test) {
+        test.expect(2);
 
+        var CONSUMER_KEY = gitCfgReader.get("twitter.consumer-key");
+        var CONSUMER_SECRET = gitCfgReader.get("twitter.consumer-secret");
+        var token = gitCfgReader.get("twitter.token");
+        var token_secret = gitCfgReader.get("twitter.token-secret");
+
+        var qs = require("querystring");
+        var oauth = {
+            consumer_key: CONSUMER_KEY,
+            consumer_secret: CONSUMER_SECRET,
+            token: token,
+            token_secret: token_secret
+        }, url = 'https://api.twitter.com/1.1/users/search.json?',
+            params = {
+                q: "twitter",
+                page: 1,
+                count: 5
+            };
+
+        url += qs.stringify(params);
+
+        request.get({
+            url: url,
+            oauth: oauth,
+            json: true,
+            proxy: "http://127.0.0.1:8087",
+            rejectUnauthorized: false
+        }, function(e, r, user) {
+            test.equal(e, null, "When use correct access token should has no error returned.");
+            test.equal(_.isArray(user), true, "When calling twitter search API, it must returns with an array.");
+
+            test.done();
+        })
+    }
 };

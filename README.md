@@ -243,13 +243,18 @@ grunt.initConfig({
                 context: '/tw/search',
                 host: 'api.twitter.com',
                 proto: "https",
-                port: 443,
                 proxy: "http://localhost:8087",
                 rewrite: {
                     'tw/search': "1.1/users/search.json"
                 },
-                headers: {
-                    Authorization: ''
+                /*
+                   The OAuth info, you can access https://dev.twitter.com/apps/[Your-Twitter-App-Id]/oauth.
+                */
+                oauth: {
+                    consumer_key: CONSUMER_KEY, // Your consumer key
+                    consumer_secret: CONSUMER_SECRET, // Your consumer secret
+                    token: TOKEN, // Your access token
+                    token_secret: TOKEN_SECRET // Your access secret
                 }
             }]
        }
@@ -273,9 +278,7 @@ For the server task, add the `nest_proxy` task before the connect task
 ```
 
 ## ISSUES
-* Only support `GET` request
 * Not support `WebSocket` yet
-* Not testing enough
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
@@ -285,3 +288,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 0.0.1
 	+ Support blocked service proxy
 	+ Http GET request
+
+* 0.0.5
+    + Fix a few bugs
+    + Enable all HTTP request method (GET/POST/PUT/DEL/HEAD)
+    + fix twitter https request can not use 443 port issue
