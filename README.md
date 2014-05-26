@@ -261,6 +261,62 @@ grunt.initConfig({
  });
 ```
 
+#### Use git config to store oauth token and secret
+
+Most time, it's very bad to contains oauth token by hardcode. It's very unsafe when you publish to a public repo. So the way i think use global git config to store this info will be better.
+
+* Add new oauth config sections to git config
+
+```shell
+  # Twitter
+  git config --global --add twitter.consumer-key [Your Consumer key]
+  git config --global --add twitter.consumer-secret [Your Consumer secret]
+  git config --global --add twitter.token [Your token]
+  git config --global --add twitter.token-secret [Your token secret]
+  
+  #Facebook
+  git config --global --add facebook.token [Your facebook access token] 
+  
+  # Check all configs 
+   git config --global -l
+  
+```  
+* Config file
+```js
+grunt.initConfig({
+		connect: {
+            options: {
+                port: 9000,
+                // change this to '0.0.0.0' to access the server from outside
+                hostname: 'localhost'
+            },
+            proxies: [{
+                context: '/fb/search',
+                host: 'graph.facebook.com',
+                proto: "https",
+                port: 443,
+                proxy: "http://localhost:8087",
+                rewrite: {
+                    'token': 'access_token=' + "{{git-facebook-config.token}}",
+                    'fb/search': "v2.0/search"
+                }
+            }, {
+                context: '/tw/search',
+                host: 'api.twitter.com',
+                proto: "https",
+                proxy: "http://localhost:8087",
+                rewrite: {
+                    'tw/search': "1.1/users/search.json"
+                },
+                /*
+                   The OAuth info, you can access https://dev.twitter.com/apps/[Your-Twitter-App-Id]/oauth.
+                */
+                oauth: "{{git-twitter-config}}"
+            }]
+       }
+ });
+```
+
 ### Adding the configureProxy task to the server task
 
 For the server task, add the `nest_proxy` task before the connect task
@@ -293,3 +349,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
     + Fix a few bugs
     + Enable all HTTP request method (GET/POST/PUT/DEL/HEAD)
     + fix twitter https request can not use 443 port issue
+    + Integrate git config support for config oauth token

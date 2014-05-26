@@ -9,6 +9,7 @@
 'use strict';
 var _ = require("lodash");
 var Proxy = require("../lib/proxy");
+var configReader = require("../lib/git-config-reader");
 
 var DEFAULTS = {
     rejectUnauthorized: false, // Enable HTTPs reponse witout Authrize
@@ -42,7 +43,7 @@ var processRewrites = function(rewrites) {
     Object.keys(rewrites || {}).forEach(function(from) {
         var rule = {
             from: from,
-            to: rewrites[from]
+            to: configReader.checkAndReplaceGitConfig(rewrites[from])
         };
 
         if (validateRewrite(rule)) {
@@ -57,6 +58,23 @@ var processRewrites = function(rewrites) {
     return rules;
 };
 
+var processOAuth = function(config) {
+    var oauth = config.oauth;
+
+    if (oauth && typeof oauth === "string") {
+        config.oauth = configReader.get(oauth);
+        /*
+         twitter use underscore inside params, but git config key can not include underscore.
+         So here need a reverse to cover dash to underscore.
+         */
+
+        if (oauth.indexOf('twitter') > -1) {
+            config.oauth = configReader.renameOAuthKey(config.oauth);
+        }
+    }
+
+    return config;
+}
 
 var validateProxyConfig = function(config) {
     if (!config) {
@@ -101,7 +119,7 @@ module.exports = function(grunt) {
             if (validateProxyConfig(proxyOption)) {
                 proxyOption.rules = processRewrites(proxyOption.rewrite);
 
-                Proxy.add(proxyOption);
+                Proxy.add(processOAuth(proxyOption));
 
                 grunt.log.writeln('Proxy created for: ' + proxyOption.context + ' to ' + proxyOption.host + ':' + proxyOption.port);
             }
