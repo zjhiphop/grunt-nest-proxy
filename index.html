@@ -295,14 +295,76 @@ Default Value: ``</p>
                 <span class="nx">context</span><span class="o">:</span> <span class="s1">'/tw/search'</span><span class="p">,</span>
                 <span class="nx">host</span><span class="o">:</span> <span class="s1">'api.twitter.com'</span><span class="p">,</span>
                 <span class="nx">proto</span><span class="o">:</span> <span class="s2">"https"</span><span class="p">,</span>
-                <span class="nx">port</span><span class="o">:</span> <span class="mi">443</span><span class="p">,</span>
                 <span class="nx">proxy</span><span class="o">:</span> <span class="s2">"http://localhost:8087"</span><span class="p">,</span>
                 <span class="nx">rewrite</span><span class="o">:</span> <span class="p">{</span>
                     <span class="s1">'tw/search'</span><span class="o">:</span> <span class="s2">"1.1/users/search.json"</span>
                 <span class="p">},</span>
-                <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
-                    <span class="nx">Authorization</span><span class="o">:</span> <span class="s1">''</span>
+                <span class="cm">/*</span>
+<span class="cm">                   The OAuth info, you can access https://dev.twitter.com/apps/[Your-Twitter-App-Id]/oauth.</span>
+<span class="cm">                */</span>
+                <span class="nx">oauth</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="nx">consumer_key</span><span class="o">:</span> <span class="nx">CONSUMER_KEY</span><span class="p">,</span> <span class="c1">// Your consumer key</span>
+                    <span class="nx">consumer_secret</span><span class="o">:</span> <span class="nx">CONSUMER_SECRET</span><span class="p">,</span> <span class="c1">// Your consumer secret</span>
+                    <span class="nx">token</span><span class="o">:</span> <span class="nx">TOKEN</span><span class="p">,</span> <span class="c1">// Your access token</span>
+                    <span class="nx">token_secret</span><span class="o">:</span> <span class="nx">TOKEN_SECRET</span> <span class="c1">// Your access secret</span>
                 <span class="p">}</span>
+            <span class="p">}]</span>
+       <span class="p">}</span>
+ <span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="use-git-config-to-store-oauth-token-and-secret" class="anchor" href="#use-git-config-to-store-oauth-token-and-secret"><span class="octicon octicon-link"></span></a>Use git config to store oauth token and secret</h4>
+
+<p>Most time, it's very bad to contains oauth token by hardcode. It's very unsafe when you publish to a public repo. So the way i think use global git config to store this info will be better.</p>
+
+<ul>
+<li>Add new oauth config sections to git config</li>
+</ul><pre lang="shell"><code>  # Twitter
+  git config --global --add twitter.consumer-key [Your Consumer key]
+  git config --global --add twitter.consumer-secret [Your Consumer secret]
+  git config --global --add twitter.token [Your token]
+  git config --global --add twitter.token-secret [Your token secret]
+
+  #Facebook
+  git config --global --add facebook.token [Your facebook access token] 
+
+  # Check all configs 
+   git config --global -l
+
+</code></pre>
+
+<ul>
+<li>Config file</li>
+</ul><div class="highlight highlight-js"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+        <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+                <span class="c1">// change this to '0.0.0.0' to access the server from outside</span>
+                <span class="nx">hostname</span><span class="o">:</span> <span class="s1">'localhost'</span>
+            <span class="p">},</span>
+            <span class="nx">proxies</span><span class="o">:</span> <span class="p">[{</span>
+                <span class="nx">context</span><span class="o">:</span> <span class="s1">'/fb/search'</span><span class="p">,</span>
+                <span class="nx">host</span><span class="o">:</span> <span class="s1">'graph.facebook.com'</span><span class="p">,</span>
+                <span class="nx">proto</span><span class="o">:</span> <span class="s2">"https"</span><span class="p">,</span>
+                <span class="nx">port</span><span class="o">:</span> <span class="mi">443</span><span class="p">,</span>
+                <span class="nx">proxy</span><span class="o">:</span> <span class="s2">"http://localhost:8087"</span><span class="p">,</span>
+                <span class="nx">rewrite</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s1">'token'</span><span class="o">:</span> <span class="s1">'access_token='</span> <span class="o">+</span> <span class="s2">"{{git-facebook-config.token}}"</span><span class="p">,</span>
+                    <span class="s1">'fb/search'</span><span class="o">:</span> <span class="s2">"v2.0/search"</span>
+                <span class="p">}</span>
+            <span class="p">},</span> <span class="p">{</span>
+                <span class="nx">context</span><span class="o">:</span> <span class="s1">'/tw/search'</span><span class="p">,</span>
+                <span class="nx">host</span><span class="o">:</span> <span class="s1">'api.twitter.com'</span><span class="p">,</span>
+                <span class="nx">proto</span><span class="o">:</span> <span class="s2">"https"</span><span class="p">,</span>
+                <span class="nx">proxy</span><span class="o">:</span> <span class="s2">"http://localhost:8087"</span><span class="p">,</span>
+                <span class="nx">rewrite</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s1">'tw/search'</span><span class="o">:</span> <span class="s2">"1.1/users/search.json"</span>
+                <span class="p">},</span>
+                <span class="cm">/*</span>
+<span class="cm">                   The OAuth info, you can access https://dev.twitter.com/apps/[Your-Twitter-App-Id]/oauth.</span>
+<span class="cm">                */</span>
+                <span class="nx">oauth</span><span class="o">:</span> <span class="s2">"{{git-twitter-config}}"</span>
             <span class="p">}]</span>
        <span class="p">}</span>
  <span class="p">});</span>
@@ -328,9 +390,7 @@ Default Value: ``</p>
 <a name="issues" class="anchor" href="#issues"><span class="octicon octicon-link"></span></a>ISSUES</h2>
 
 <ul>
-<li>Only support <code>GET</code> request</li>
 <li>Not support <code>WebSocket</code> yet</li>
-<li>Not testing enough</li>
 </ul><h2>
 <a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
@@ -342,11 +402,22 @@ Default Value: ``</p>
 <h1></h1>
 
 <ul>
-<li>0.0.1
+<li>
+<p>0.0.1</p>
 
 <ul>
 <li>Support blocked service proxy</li>
 <li>Http GET request</li>
+</ul>
+</li>
+<li>
+<p>0.0.5</p>
+
+<ul>
+<li>Fix a few bugs</li>
+<li>Enable all HTTP request method (GET/POST/PUT/DEL/HEAD)</li>
+<li>fix twitter https request can not use 443 port issue</li>
+<li>Integrate git config support for config oauth token</li>
 </ul>
 </li>
 </ul>
