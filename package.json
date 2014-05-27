@@ -1,7 +1,7 @@
 {
     "name": "grunt-nest-proxy",
     "description": "Like grunt-connect-proxy, but could be nested and more simpler",
-    "version": "0.0.5",
+    "version": "0.1.0",
     "homepage": "https://github.com/zjhiphop/grunt-nest-proxy",
     "author": {
         "name": "zjhiphop",
@@ -36,7 +36,13 @@
         "grunt": "~0.4.0"
     },
     "keywords": [
-        "gruntplugin"
+        "plugin",
+        "proxy",
+        "connect",
+        "http",
+        "nest",
+        "grunt",
+        "git"
     ],
     "dependencies": {
         "request": "~2.36.0",
