@@ -350,3 +350,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
     + Enable all HTTP request method (GET/POST/PUT/DEL/HEAD)
     + fix twitter https request can not use 443 port issue
     + Integrate git config support for config oauth token
+
+* 0.1.1
+    + fix https log error
+    + fix POST request body missed error
