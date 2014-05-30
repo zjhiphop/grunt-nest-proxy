@@ -87,8 +87,8 @@ var validateProxyConfig = function(config) {
         console.warn("Don't has a context!");
     }
 
-    if (config.proto === "http" && config.port === 80) {
-        console.warn("Protocal is https, but port is 80.");
+    if (config.proto === "https" && config.port === 80) {
+        console.warn("Protocol is https, but port is 80.");
     }
 
     return true;
@@ -118,6 +118,7 @@ module.exports = function(grunt) {
 
             if (validateProxyConfig(proxyOption)) {
                 proxyOption.rules = processRewrites(proxyOption.rewrite);
+                proxyOption.headers = configReader.checkAndReplaceGitConfigWithObject(proxyOption.headers);
 
                 Proxy.add(processOAuth(proxyOption));
 
