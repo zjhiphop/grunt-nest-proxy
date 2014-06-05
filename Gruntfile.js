@@ -57,6 +57,7 @@ module.exports = function(grunt) {
                 proxies: [{
                     context: '/request',
                     host: 'localhost',
+                    proto: "http",
                     port: 8080,
                     headers: {
                         "x-proxied-header": "added"
