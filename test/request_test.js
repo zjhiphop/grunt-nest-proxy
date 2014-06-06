@@ -66,94 +66,103 @@ exports.request_test = {
         }).end();
     },
 
-    // proxied_request_fb: function(test) {
-    //     test.expect(3);
+    proxied_request_fb: function(test) {
+        test.expect(3);
 
-    //     http.request({
-    //         host: 'localhost',
-    //         path: '/fb/search?q=Liverpool&type=page&limit=10&fields=name&token',
-    //         port: 9000
-    //     }, function(response) {
-    //         var data = '';
+        http.request({
+            host: 'localhost',
+            path: '/fb/search?q=Liverpool&type=page&limit=10&fields=name&token',
+            port: 9000
+        }, function(response) {
+            var data = '';
 
-    //         response.on('data', function(chunk) {
-    //             data += chunk;
-    //         });
+            response.on('data', function(chunk) {
+                data += chunk;
+            });
 
-    //         response.on('end', function() {
-    //             var res = JSON.parse(data);
+            response.on('end', function() {
+                var res = JSON.parse(data);
 
-    //             test.equal(res.error.type, fb_res.session_expired.type, 'Facebook session expired type');
-    //             test.equal(res.error.code, fb_res.session_expired.code, 'Facebook session expired code');
-    //             test.equal(res.error.error_subcode, fb_res.session_expired.error_subcode, 'Facebook session expired error_subcode');
+                test.equal(res.error.type, fb_res.session_expired.type, 'Facebook session expired type');
+                test.equal(res.error.code, fb_res.session_expired.code, 'Facebook session expired code');
+                test.equal(res.error.error_subcode, fb_res.session_expired.error_subcode, 'Facebook session expired error_subcode');
 
-    //             test.done();
-    //         });
+                test.done();
+            });
 
-    //     }).end();
-    // },
-    // proxied_request_twitter: function(test) {
-    //     test.expect(2);
+        }).end();
+    },
+    proxied_request_twitter: function(test) {
+        test.expect(2);
 
-    //     http.request({
-    //         host: 'localhost',
-    //         path: '/tw/search?q=Liverpool&page=3&count=5&include_entities=false',
-    //         port: 9000
-    //     }, function(response) {
-    //         var data = '';
+        http.request({
+            host: 'localhost',
+            path: '/tw/search?q=Liverpool&page=3&count=5&include_entities=false',
+            port: 9000
+        }, function(response) {
+            var data = '';
 
-    //         response.on('data', function(chunk) {
-    //             data += chunk;
-    //         });
+            response.on('data', function(chunk) {
+                data += chunk;
+            });
 
-    //         response.on('end', function() {
-    //             var res = JSON.parse(data);
+            response.on('end', function() {
+                var res = JSON.parse(data);
 
-    //             test.equal(res.errors[0].message, twitter_res.message, 'Twitter Timestamp out of bounds message');
-    //             test.equal(res.errors[0].code, twitter_res.code, 'Twitter Timestamp out of bounds code');
+                test.equal(res.errors[0].message, twitter_res.message, 'Twitter Timestamp out of bounds message');
+                test.equal(res.errors[0].code, twitter_res.code, 'Twitter Timestamp out of bounds code');
 
-    //             test.done();
-    //         });
+                test.done();
+            });
 
-    //     }).end();
-    // },
-    // twitter_oauth_test: function(test) {
-    //     test.expect(2);
+        }).end();
+    },
+    twitter_oauth_test: function(test) {
+        test.expect(2);
 
-    //     var CONSUMER_KEY = gitCfgReader.get("twitter.consumer-key");
-    //     var CONSUMER_SECRET = gitCfgReader.get("twitter.consumer-secret");
-    //     var token = gitCfgReader.get("twitter.token");
-    //     var token_secret = gitCfgReader.get("twitter.token-secret");
+        var CONSUMER_KEY = gitCfgReader.get("twitter.consumer-key");
+        var CONSUMER_SECRET = gitCfgReader.get("twitter.consumer-secret");
+        var token = gitCfgReader.get("twitter.token");
+        var token_secret = gitCfgReader.get("twitter.token-secret");
 
-    //     var qs = require("querystring");
-    //     var oauth = {
-    //         consumer_key: CONSUMER_KEY,
-    //         consumer_secret: CONSUMER_SECRET,
-    //         token: token,
-    //         token_secret: token_secret
-    //     }, url = 'https://api.twitter.com/1.1/users/search.json?',
-    //         params = {
-    //             q: "twitter",
-    //             page: 1,
-    //             count: 5
-    //         };
+        var qs = require("querystring");
+        var oauth = {
+            consumer_key: CONSUMER_KEY,
+            consumer_secret: CONSUMER_SECRET,
+            token: token,
+            token_secret: token_secret
+        }, url = 'https://api.twitter.com/1.1/users/search.json?',
+            params = {
+                q: "twitter",
+                page: 1,
+                count: 5
+            };
 
-    //     url += qs.stringify(params);
+        url += qs.stringify(params);
 
-    //     request.get({
-    //         url: url,
-    //         oauth: oauth,
-    //         json: true,
-    //         proxy: "http://127.0.0.1:8087",
-    //         rejectUnauthorized: false
-    //     }, function(e, r, user) {
-    //         test.equal(e, null, "When use correct access token should has no error returned.");
-    //         test.equal(_.isArray(user), true, "When calling twitter search API, it must returns with an array.");
+        request.get({
+            url: url,
+            oauth: oauth,
+            json: true,
+            proxy: "http://127.0.0.1:8087",
+            rejectUnauthorized: false
+        }, function(e, r, user) {
+            test.equal(e, null, "When use correct access token should has no error returned.");
+            test.equal(_.isArray(user), true, "When calling twitter search API, it must returns with an array.");
 
-    //         test.done();
-    //     })
-    // },
+            test.done();
+        })
+    },
     multi_data_test: function(test) {
+        /*
+        * HTML fragement to test
+        * 
+            <form method="post" enctype="multipart/form-data" action="/api/v2/testuploadtmpimg">
+             <input type="file" name="file">
+             <input type="submit">
+            </form>
+        */
+
         var helper = require("../lib/multi-data");
         //======= USAGE ============================================================
         var options = {
