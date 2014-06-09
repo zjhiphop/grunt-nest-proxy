@@ -47,6 +47,11 @@ module.exports = function(grunt) {
                 hostname: 'localhost'
             },
             proxies: [{
+                context: ['^/brand/', '/sources/', '/users/', '\\d+\/(?:timeline|post|analytics)'],
+                rewrite: {
+                    "\/(\\d+\/(?:timeline|post|analytics)|brand|sources|users)": "#/$1" // Support HTML5 pushState rewrite
+                }
+            }, {
                 context: '/api/v1',
                 host: 'yourserver.com',
                 port: 80,
