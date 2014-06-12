@@ -360,3 +360,6 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 0.1.2
     + Add regexp support for proxy context
     + Add config example for support HTML5 pushState rewrite rule
+
+* 0.1.3
+    + issue fix
