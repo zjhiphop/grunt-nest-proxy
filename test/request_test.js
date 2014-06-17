@@ -92,6 +92,7 @@ exports.request_test = {
 
         }).end();
     },
+
     proxied_request_twitter: function(test) {
         test.expect(2);
 
@@ -153,6 +154,7 @@ exports.request_test = {
             test.done();
         })
     },
+
     multi_data_test: function(test) {
         /*
         * HTML fragement to test
@@ -179,8 +181,42 @@ exports.request_test = {
 
         helper.postImage(options, __dirname + "/facebook.png", {
             // 'Cooikie': 'cookiename=cookievalue'
-            "X-AUTH-TOKEN": "2d1d1988-31fa-4f24-ad5f-9df969c81135"
+            "X-AUTH-TOKEN": gitCfgReader.get("kawo.token"),
+            "content-type": 'multipart/form-data'
         }, function(err, response) {
+            test.equal(err, null, "When upload image to server should not have error");
+
+            test.ok( !! response, "When upload image to server should have response");
+
+            test.done();
+        });
+    },
+
+    multi_data_with_node_server_test: function(test) {
+        /*
+        * HTML fragement to test
+        * 
+            <form method="post" enctype="multipart/form-data" action="/api/v2/testuploadtmpimg">
+             <input type="file" name="file">
+             <input type="submit">
+            </form>
+        */
+
+        var helper = require("../lib/multi-data");
+        //======= USAGE ============================================================
+        var options = {
+            host: 'localhost',
+            port: 8888,
+            path: '/upload',
+            method: 'POST',
+            encoding: 'utf8'
+        };
+
+        test.expect(3);
+
+        test.ok( !! helper.postImage, "The multipart data should have postImage method.");
+
+        helper.postImage(options, __dirname + "/facebook.png", null, function(err, response) {
             test.equal(err, null, "When upload image to server should not have error");
 
             test.ok( !! response, "When upload image to server should have response");
